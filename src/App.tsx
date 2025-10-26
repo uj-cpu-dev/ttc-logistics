@@ -5,7 +5,6 @@ import HeroImageSVG from "./components/HeroImageSVG";
 import AboutImageSVG from "./components/AboutImageSVG";
 import { Truck, Ship, Plane, CheckCircle, MapPin, Clock, Instagram } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
-import type { IconType } from "react-icons";
 
 // Fix TS2786 warning
 const WhatsAppIcon: React.FC<React.SVGProps<SVGSVGElement>> =
