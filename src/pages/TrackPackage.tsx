@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, Circle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 
 const dummyTrackingData = {
   trackingNumber: "TTC123456789",

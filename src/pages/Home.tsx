@@ -3,7 +3,6 @@ import ServiceCard from "../components/ServiceCard";
 import HeroImageSVG from "../components/HeroImageSVG";
 import AboutImageSVG from "../components/AboutImageSVG";
 import FAQSection from "../components/FAQSection";
-import FadeInSection from "../components/FadeInSection"
 import ServicesSection from "../components/ServicesSection"
 import { Truck, Ship, Plane, CheckCircle, MapPin, Clock, Instagram } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
