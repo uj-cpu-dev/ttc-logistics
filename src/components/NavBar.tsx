@@ -2,13 +2,13 @@ import { useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 
 const navItems = [
-  { name: "Home", href: "#home" },
-  { name: "Track Your Shipment", href: "#tracking", dropdown: true },
-  { name: "About", href: "#about" },
-  { name: "Contact", href: "#contact" },
+  { name: "Home", href: "/" },
+  { name: "Track Your Shipment", href: "/track", dropdown: false },
+  { name: "About", href: "/about" },
+  { name: "Contact", href: "/contact" },
 ];
 
-export default function NavBar() {
+const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -17,7 +17,7 @@ export default function NavBar() {
         <div className="flex justify-between items-center h-20">
           {/* Logo/Brand */}
           <a
-            href="#home"
+            href="/"
             className="text-2xl sm:text-3xl font-extrabold text-blue-900 tracking-wide hover:text-orange-500 transition"
           >
             TTC <span className="text-orange-500">LOGISTICS</span>
@@ -85,3 +85,5 @@ export default function NavBar() {
     </nav>
   );
 }
+
+export default NavBar;
