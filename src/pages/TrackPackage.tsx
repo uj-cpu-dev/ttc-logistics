@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react"; // 👈 Added useRef, useEffect
 import { CheckCircle } from "lucide-react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
@@ -40,6 +40,9 @@ export default function TrackPackage() {
   const [trackingData, setTrackingData] = useState<typeof dummyTrackingData | null>(null);
   const [error, setError] = useState("");
 
+  // 1. Create the Ref
+  const detailsRef = useRef<HTMLDivElement>(null);
+
   const handleTrack = (e: React.FormEvent) => {
     e.preventDefault();
     if (trackingNumber.trim() === dummyTrackingData.trackingNumber) {
@@ -51,8 +54,20 @@ export default function TrackPackage() {
     }
   };
 
+  // 2. Implement the Scroll Logic
+  useEffect(() => {
+    if (trackingData && detailsRef.current) {
+      detailsRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, [trackingData]); // Run whenever trackingData changes
+
   return (
-    <section className="min-h-screen bg-gray-50 py-16 px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+    <section
+    ref={detailsRef}
+    className="min-h-screen bg-gray-50 py-16 px-4 sm:px-6 lg:px-8 flex flex-col items-center">
       {!trackingData ? (
         // STEP 1: ENTER TRACKING NUMBER
         <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-lg max-w-md w-full text-center my-auto">
@@ -82,7 +97,10 @@ export default function TrackPackage() {
         </div>
       ) : (
         // STEP 2: TRACKING DETAILS
-        <div className="bg-white p-6 sm:p-10 rounded-3xl shadow-xl max-w-5xl w-full my-10">
+        // 3. Attach the Ref here
+        <div
+          className="bg-white p-6 sm:p-10 rounded-3xl shadow-xl max-w-5xl w-full my-10"
+        >
           <h2 className="text-xl sm:text-3xl font-bold text-blue-900 mb-2">{trackingData.status}</h2>
           <p className="text-gray-700 mb-1 text-sm sm:text-base">{trackingData.deliveredAt}</p>
           <p className="text-gray-600 mb-6 text-sm sm:text-base">
