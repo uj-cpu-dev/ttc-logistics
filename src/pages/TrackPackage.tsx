@@ -1,5 +1,15 @@
 import { useState } from "react";
 import { CheckCircle } from "lucide-react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import L from "leaflet";
+
+// Dummy coordinates for Nigerian cities
+const locationCoords: Record<string, [number, number]> = {
+  "Lagos, NG": [6.5244, 3.3792],
+  "Benin, NG": [6.335, 5.6037],
+  "Lokoja, NG": [7.8023, 6.7333],
+  "Abuja, NG": [9.0579, 7.4951],
+};
 
 const dummyTrackingData = {
   trackingNumber: "TTC123456789",
@@ -16,6 +26,14 @@ const dummyTrackingData = {
     { date: "Wed, 12/26/2018", time: "9:04 pm", location: "Lagos, NG", status: "Picked up" },
   ],
 };
+
+// Custom Leaflet icon (so markers display correctly)
+const customIcon = new L.Icon({
+  iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+});
 
 export default function TrackPackage() {
   const [trackingNumber, setTrackingNumber] = useState("");
@@ -36,7 +54,7 @@ export default function TrackPackage() {
   return (
     <section className="min-h-screen bg-gray-50 py-20 px-6 flex flex-col items-center">
       {!trackingData ? (
-        // --- STEP 1: ENTER TRACKING NUMBER ---
+        // STEP 1: ENTER TRACKING NUMBER
         <div className="bg-white p-8 rounded-3xl shadow-lg max-w-md w-full text-center my-auto">
           <h1 className="text-3xl font-bold text-blue-900 mb-4">Track Your Package</h1>
           <p className="text-gray-600 mb-6">
@@ -61,11 +79,9 @@ export default function TrackPackage() {
           <p className="text-sm text-gray-400 mt-4">Try <b>TTC123456789</b> for demo</p>
         </div>
       ) : (
-        // --- STEP 2: TRACKING DETAILS ---
-        <div className="bg-white p-10 rounded-3xl shadow-xl max-w-4xl w-full my-10">
-          <h2 className="text-2xl sm:text-3xl font-bold text-blue-900 mb-2">
-            {trackingData.status}
-          </h2>
+        // STEP 2: TRACKING DETAILS
+        <div className="bg-white p-10 rounded-3xl shadow-xl max-w-5xl w-full my-10">
+          <h2 className="text-2xl sm:text-3xl font-bold text-blue-900 mb-2">{trackingData.status}</h2>
           <p className="text-gray-700 mb-1">{trackingData.deliveredAt}</p>
           <p className="text-gray-600 mb-6">
             Signed for by: <span className="font-medium text-gray-800">{trackingData.signedBy}</span>
@@ -73,12 +89,10 @@ export default function TrackPackage() {
 
           {/* Progress Bar */}
           <div className="relative flex items-center justify-between mb-8">
-            {[1, 2, 3, 4, 5].map((step, idx) => (
+            {[1, 2, 3, 4, 5].map((_, idx) => (
               <div key={idx} className="flex items-center">
                 <CheckCircle className="text-green-500 w-6 h-6" />
-                {idx < 4 && (
-                  <div className="w-16 sm:w-24 h-1 bg-green-400 mx-1 sm:mx-2"></div>
-                )}
+                {idx < 4 && <div className="w-16 sm:w-24 h-1 bg-green-400 mx-1 sm:mx-2"></div>}
               </div>
             ))}
           </div>
@@ -96,9 +110,7 @@ export default function TrackPackage() {
 
           {/* Travel History */}
           <div className="mt-6 border-t border-gray-200 pt-6">
-            <h4 className="text-lg font-semibold text-blue-900 mb-4">
-              Travel History
-            </h4>
+            <h4 className="text-lg font-semibold text-blue-900 mb-4">Travel History</h4>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-gray-700">
                 <thead>
@@ -115,13 +127,41 @@ export default function TrackPackage() {
                       <td className="py-2">{entry.date}</td>
                       <td className="py-2">{entry.time}</td>
                       <td className="py-2">{entry.location}</td>
-                      <td className="py-2 text-orange-600 font-medium">
-                        {entry.status}
-                      </td>
+                      <td className="py-2 text-orange-600 font-medium">{entry.status}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+            </div>
+          </div>
+
+          {/* MAP SECTION */}
+          <div className="mt-10">
+            <h4 className="text-lg font-semibold text-blue-900 mb-4">Package Route</h4>
+            <div className="h-96 w-full rounded-2xl overflow-hidden shadow-md">
+              <MapContainer
+                center={[8.0, 6.0]} // center roughly Nigeria
+                zoom={6}
+                style={{ height: "100%", width: "100%" }}
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+                />
+                {trackingData.history.map((entry, idx) => {
+                  const coords = locationCoords[entry.location];
+                  if (!coords) return null;
+                  return (
+                    <Marker key={idx} position={coords} icon={customIcon}>
+                      <Popup>
+                        <strong>{entry.location}</strong> <br />
+                        {entry.status} <br />
+                        {entry.time}
+                      </Popup>
+                    </Marker>
+                  );
+                })}
+              </MapContainer>
             </div>
           </div>
 
