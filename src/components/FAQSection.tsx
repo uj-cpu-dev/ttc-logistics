@@ -106,9 +106,10 @@ const FAQSection: React.FC = () => {
         </div>
 
         {/* Right Illustration */}
-        <div className="flex justify-center md:justify-end order-1 md:order-2">
-          <FAQIllustrationSVG className="w-full max-w-md md:max-w-lg drop-shadow-lg" />
-        </div>
+          <div className="flex justify-center md:justify-end order-1 md:order-2">
+              {/*<FAQIllustrationSVG className="w-full max-w-md md:max-w-lg drop-shadow-lg" />*/}
+              <img src={"https://images.pexels.com/photos/8487344/pexels-photo-8487344.jpeg"} alt={'faq-image'}/>
+          </div>
       </div>
     </section>
   );
