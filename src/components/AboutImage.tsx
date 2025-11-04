@@ -1,4 +1,3 @@
-import AboutImageSVG from "./AboutImageSVG";
 const AboutImage = () => {
     return (
         <div className="relative p-3 sm:p-4 bg-yellow-50 rounded-3xl flex justify-center items-center">

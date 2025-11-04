@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import FAQIllustrationSVG from "./FAQIllustrationSVG";
 
 // --- FAQ Item Component ---
 interface FAQItemProps {

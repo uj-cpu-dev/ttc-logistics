@@ -18,9 +18,7 @@ const HeroSection = () => {
 
 export default HeroSection;*/
 
-import HeroContent from "./HeroContent";
 import {Instagram, Search} from "lucide-react";
-import ContactCard from "./ContactCard";
 import WhatsAppIcon from "./WhatsAppIcon";
 import { useNavigate } from "react-router-dom";
 
